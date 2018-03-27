@@ -27,52 +27,47 @@ passport.use(
     },
     (accessToken, refreshToken, profile, done) => {
       console.log('USER:' + profile.id + ' - ' + profile.emails[0].value);
-      console.log();
-      try {
-        User.findOne({ email: profile.emails[0].value }).then(existingUser => {
-          console.log(
-            'USER in first find:' + profile.id + ' - ' + profile.emails[0].value
-          );
-          if (existingUser) {
-            User.findOne({ googleId: profile.id }).then(reallyExistingUser => {
-              console.log(
-                'USER in second find:' +
-                  profile.id +
-                  ' - ' +
-                  profile.emails[0].value
-              );
-              if (reallyExistingUser) {
-                done(null, reallyExistingUser);
-              } else {
-                User.findOneAndUpdate(
-                  { email: profile.emails[0].value },
-                  { $set: { googleId: profile.id } },
-                  (err, doc) => {
-                    if (err) {
-                      done(err, doc);
-                    }
-                    done(null, doc);
+      User.findOne({ email: profile.emails[0].value }).then(existingUser => {
+        console.log(
+          'USER in first find:' + profile.id + ' - ' + profile.emails[0].value
+        );
+        if (existingUser) {
+          User.findOne({ googleId: profile.id }).then(reallyExistingUser => {
+            console.log(
+              'USER in second find:' +
+                profile.id +
+                ' - ' +
+                profile.emails[0].value
+            );
+            if (reallyExistingUser) {
+              done(null, reallyExistingUser);
+            } else {
+              User.findOneAndUpdate(
+                { email: profile.emails[0].value },
+                { $set: { googleId: profile.id } },
+                (err, doc) => {
+                  if (err) {
+                    done(err, doc);
                   }
-                );
-              }
+                  done(null, doc);
+                }
+              );
+            }
+          });
+          //done(err, user)
+          //already have a User record with that googleId
+        } else {
+          console.log('USER:' + profile.id + ' - ' + profile.emails[0].value);
+          new User({
+            googleId: profile.id,
+            email: profile.emails[0].value
+          })
+            .save()
+            .then(user => {
+              done(null, user);
             });
-            //done(err, user)
-            //already have a User record with that googleId
-          } else {
-            console.log('USER:' + profile.id + ' - ' + profile.emails[0].value);
-            new User({
-              googleId: profile.id,
-              email: profile.emails[0].value
-            })
-              .save()
-              .then(user => {
-                done(null, user);
-              });
-          }
-        });
-      } catch (err) {
-        console.log('Error in catch: ' + err.message);
-      }
+        }
+      });
     }
   )
 );
@@ -95,8 +90,15 @@ passport.use(
       ]
     },
     (accessToken, refreshToken, profile, done) => {
+      console.log('USER:' + profile.id + ' - ' + profile.emails[0].value);
       User.findOne({ email: profile.emails[0].value }).then(existingUser => {
         if (existingUser) {
+          console.log(
+            'USER in the first find FB:' +
+              profile.id +
+              ' - ' +
+              profile.emails[0].value
+          );
           User.findOne({ facebookId: profile.id }).then(reallyExistingUser => {
             if (reallyExistingUser) {
               done(null, reallyExistingUser);
