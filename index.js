@@ -17,7 +17,7 @@ require('./services/passport');
 //const credentials = { key: privateKey, cert: certificate };
 mongoose.connect(keys.mongoURI, err => {
   if (err) {
-    console.err(
+    console.log(
       'Error connecting to DB: ' + keys.mongoURI + ' - Error: ' + err
     );
   } else {
