@@ -6,7 +6,6 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 const keys = require('./../config/keys');
 
 const User = mongoose.model('User');
-mongoose.set('debug', true);
 
 //creates the cookie
 passport.serializeUser((user, done) => {
@@ -28,47 +27,52 @@ passport.use(
     },
     (accessToken, refreshToken, profile, done) => {
       console.log('USER:' + profile.id + ' - ' + profile.emails[0].value);
-      User.findOne({ email: profile.emails[0].value }).then(existingUser => {
-        console.log(
-          'USER in first find:' + profile.id + ' - ' + profile.emails[0].value
-        );
-        if (existingUser) {
-          User.findOne({ googleId: profile.id }).then(reallyExistingUser => {
-            console.log(
-              'USER in second find:' +
-                profile.id +
-                ' - ' +
-                profile.emails[0].value
-            );
-            if (reallyExistingUser) {
-              done(null, reallyExistingUser);
-            } else {
-              User.findOneAndUpdate(
-                { email: profile.emails[0].value },
-                { $set: { googleId: profile.id } },
-                (err, doc) => {
-                  if (err) {
-                    done(err, doc);
-                  }
-                  done(null, doc);
-                }
+      console.log();
+      try {
+        User.findOne({ email: profile.emails[0].value }).then(existingUser => {
+          console.log(
+            'USER in first find:' + profile.id + ' - ' + profile.emails[0].value
+          );
+          if (existingUser) {
+            User.findOne({ googleId: profile.id }).then(reallyExistingUser => {
+              console.log(
+                'USER in second find:' +
+                  profile.id +
+                  ' - ' +
+                  profile.emails[0].value
               );
-            }
-          });
-          //done(err, user)
-          //already have a User record with that googleId
-        } else {
-          console.log('USER:' + profile.id + ' - ' + profile.emails[0].value);
-          new User({
-            googleId: profile.id,
-            email: profile.emails[0].value
-          })
-            .save()
-            .then(user => {
-              done(null, user);
+              if (reallyExistingUser) {
+                done(null, reallyExistingUser);
+              } else {
+                User.findOneAndUpdate(
+                  { email: profile.emails[0].value },
+                  { $set: { googleId: profile.id } },
+                  (err, doc) => {
+                    if (err) {
+                      done(err, doc);
+                    }
+                    done(null, doc);
+                  }
+                );
+              }
             });
-        }
-      });
+            //done(err, user)
+            //already have a User record with that googleId
+          } else {
+            console.log('USER:' + profile.id + ' - ' + profile.emails[0].value);
+            new User({
+              googleId: profile.id,
+              email: profile.emails[0].value
+            })
+              .save()
+              .then(user => {
+                done(null, user);
+              });
+          }
+        });
+      } catch (err) {
+        console.log('Error in catch: ' + err.message);
+      }
     }
   )
 );

@@ -15,7 +15,15 @@ require('./services/passport');
 //const privateKey = fs.readFileSync('config/privatekey.key', 'utf8');
 //const certificate = fs.readFileSync('config/certificate.crt', 'utf8');
 //const credentials = { key: privateKey, cert: certificate };
-mongoose.connect(keys.mongoURI);
+mongoose.connect(keys.mongoURI, err => {
+  if (err) {
+    console.err(
+      'Error connecting to DB: ' + keys.mongoURI + ' - Error: ' + err
+    );
+  } else {
+    console.log('Connected to DB');
+  }
+});
 const app = express();
 
 const httpServer = http.createServer(app);
