@@ -74,8 +74,7 @@ passport.use(
         'timezone',
         'updated_time',
         'verified'
-      ],
-      proxy: true
+      ]
     },
     (accessToken, refreshToken, profile, done) => {
       User.findOne({ email: profile.emails[0].value }).then(existingUser => {
