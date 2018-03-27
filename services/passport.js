@@ -23,13 +23,13 @@ passport.use(
     {
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: '/auth/google/callback'
+      callbackURL: '/auth/google/callback',
+      proxy: true
     },
     (accessToken, refreshToken, profile, done) => {
       User.findOne({ email: profile.emails[0].value }).then(existingUser => {
         if (existingUser) {
           User.findOne({ googleId: profile.id }).then(reallyExistingUser => {
-            console.log('reallyExistingUser: ', reallyExistingUser);
             if (reallyExistingUser) {
               done(null, reallyExistingUser);
             } else {
@@ -75,7 +75,8 @@ passport.use(
         'timezone',
         'updated_time',
         'verified'
-      ]
+      ],
+      proxy: true
     },
     (accessToken, refreshToken, profile, done) => {
       User.findOne({ email: profile.emails[0].value }).then(existingUser => {
