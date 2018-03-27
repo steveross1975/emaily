@@ -9,7 +9,6 @@ const User = mongoose.model('User');
 
 //creates the cookie
 passport.serializeUser((user, done) => {
-  console.log('USER:' + user);
   done(null, user.id);
 });
 
@@ -27,9 +26,19 @@ passport.use(
       callbackURL: keys.appURL + '/auth/google/callback'
     },
     (accessToken, refreshToken, profile, done) => {
+      console.log('USER:' + profile.id + ' - ' + profile.emails[0].value);
       User.findOne({ email: profile.emails[0].value }).then(existingUser => {
+        console.log(
+          'USER in first find:' + profile.id + ' - ' + profile.emails[0].value
+        );
         if (existingUser) {
           User.findOne({ googleId: profile.id }).then(reallyExistingUser => {
+            console.log(
+              'USER in second find:' +
+                profile.id +
+                ' - ' +
+                profile.emails[0].value
+            );
             if (reallyExistingUser) {
               done(null, reallyExistingUser);
             } else {
