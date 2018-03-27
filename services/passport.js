@@ -23,8 +23,7 @@ passport.use(
     {
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: '/auth/google/callback',
-      proxy: true
+      callbackURL: keys.appURL + '/auth/google/callback'
     },
     (accessToken, refreshToken, profile, done) => {
       User.findOne({ email: profile.emails[0].value }).then(existingUser => {
@@ -65,7 +64,7 @@ passport.use(
     {
       clientID: keys.facebookAppID,
       clientSecret: keys.facebookAppSecret,
-      callbackURL: '/auth/facebook/callback',
+      callbackURL: keys.appURL + '/auth/facebook/callback',
       profileFields: [
         'id',
         'email',

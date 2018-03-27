@@ -4,5 +4,6 @@ module.exports = {
   mongoURI: process.env.MONGO_URI,
   cookieKey: process.env.COOKIE_KEY,
   facebookAppID: process.env.FACEBOOK_APP_ID,
-  facebookAppSecret: process.env.FACEBOOK_APP_SECRET
+  facebookAppSecret: process.env.FACEBOOK_APP_SECRET,
+  appURL: process.env.APP_URL
 };
