@@ -29,12 +29,6 @@ passport.use(
       User.findOne({ email: profile.emails[0].value }).then(existingUser => {
         if (existingUser) {
           User.findOne({ googleId: profile.id }).then(reallyExistingUser => {
-            console.log(
-              'USER in second find:' +
-                profile.id +
-                ' - ' +
-                profile.emails[0].value
-            );
             if (reallyExistingUser) {
               done(null, reallyExistingUser);
             } else {
@@ -53,7 +47,6 @@ passport.use(
           //done(err, user)
           //already have a User record with that googleId
         } else {
-          console.log('USER:' + profile.id + ' - ' + profile.emails[0].value);
           new User({
             googleId: profile.id,
             email: profile.emails[0].value
