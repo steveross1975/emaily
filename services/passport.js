@@ -18,8 +18,6 @@ passport.deserializeUser((id, done) => {
   });
 });
 
-console.log(keys.appURL + '/auth/google/callback');
-
 passport.use(
   new GoogleStrategy(
     {
@@ -49,13 +47,13 @@ passport.use(
           //done(err, user)
           //already have a User record with that googleId
         } else {
+          console.log('USER:' + profile.id + ' - ' + profile.emails[0].value);
           new User({
             googleId: profile.id,
             email: profile.emails[0].value
           })
             .save()
             .then(user => {
-              console.log('USER:' + user);
               done(null, user);
             });
         }
