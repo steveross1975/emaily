@@ -1,4 +1,4 @@
 node_modules/
-keys.js
+dev.js
 certificate.crt
 privatekey.key
