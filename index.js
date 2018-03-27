@@ -31,7 +31,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
 //single line to require the function in the authRoutes file, return it and call it immediately with the app argument
 require('./routes/authRoutes')(app);
 

@@ -26,10 +26,10 @@ passport.use(
       callbackURL: '/auth/google/callback'
     },
     (accessToken, refreshToken, profile, done) => {
-      console.log(profile);
       User.findOne({ email: profile.emails[0].value }).then(existingUser => {
         if (existingUser) {
           User.findOne({ googleId: profile.id }).then(reallyExistingUser => {
+            console.log('reallyExistingUser: ', reallyExistingUser);
             if (reallyExistingUser) {
               done(null, reallyExistingUser);
             } else {
@@ -38,10 +38,9 @@ passport.use(
                 { $set: { googleId: profile.id } },
                 (err, doc) => {
                   if (err) {
-                    done(err, reallyExistingUser);
+                    done(err, doc);
                   }
                   done(null, doc);
-                  console.log(doc);
                 }
               );
             }
@@ -90,10 +89,9 @@ passport.use(
                 { $set: { facebookId: profile.id } },
                 (err, doc) => {
                   if (err) {
-                    done(err, reallyExistingUser);
+                    done(err, doc);
                   }
                   done(null, doc);
-                  console.log(doc);
                 }
               );
             }
