@@ -12,15 +12,15 @@ const keys = require('./config/keys');
 require('./models/User');
 require('./services/passport');
 
-const privateKey = fs.readFileSync('config/privatekey.key', 'utf8');
-const certificate = fs.readFileSync('config/certificate.crt', 'utf8');
-const credentials = { key: privateKey, cert: certificate };
+//const privateKey = fs.readFileSync('config/privatekey.key', 'utf8');
+//const certificate = fs.readFileSync('config/certificate.crt', 'utf8');
+//const credentials = { key: privateKey, cert: certificate };
 mongoose.connect(keys.mongoURI);
 
 const app = express();
 
 const httpServer = http.createServer(app);
-const httpsServer = https.createServer(credentials, app);
+//const httpsServer = https.createServer(credentials, app);
 
 app.use(
   cookieSession({
@@ -37,8 +37,8 @@ require('./routes/authRoutes')(app);
 //Dynamic port binding
 //telling node to listen to  PORT variable OR 5000 if PORT is not set
 const INSECPORT = process.env.PORT || 5000;
-const SECPORT = process.env.PORT || 5443;
+//const SECPORT = process.env.PORT || 5443;
 
 //app.listen(PORT);
 httpServer.listen(INSECPORT);
-httpsServer.listen(SECPORT);
+//httpsServer.listen(SECPORT);
