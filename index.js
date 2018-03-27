@@ -16,7 +16,6 @@ require('./services/passport');
 //const certificate = fs.readFileSync('config/certificate.crt', 'utf8');
 //const credentials = { key: privateKey, cert: certificate };
 mongoose.connect(keys.mongoURI);
-console.log('MONGO_URI' + keys.mongoURI);
 const app = express();
 
 const httpServer = http.createServer(app);

@@ -18,6 +18,8 @@ passport.deserializeUser((id, done) => {
   });
 });
 
+console.log(keys.appURL + '/auth/google/callback');
+
 passport.use(
   new GoogleStrategy(
     {
@@ -52,7 +54,10 @@ passport.use(
             email: profile.emails[0].value
           })
             .save()
-            .then(user => done(null, user));
+            .then(user => {
+              console.log('USER:' + user);
+              done(null, user);
+            });
         }
       });
     }
