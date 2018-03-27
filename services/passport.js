@@ -6,6 +6,7 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 const keys = require('./../config/keys');
 
 const User = mongoose.model('User');
+mongoose.set('debug', true);
 
 //creates the cookie
 passport.serializeUser((user, done) => {
