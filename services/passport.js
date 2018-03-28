@@ -23,40 +23,35 @@ passport.use(
     {
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: keys.appURL + '/auth/google/callback'
+      callbackURL: '/auth/google/callback'
     },
-    (accessToken, refreshToken, profile, done) => {
-      User.findOne({ email: profile.emails[0].value }).then(existingUser => {
-        if (existingUser) {
-          User.findOne({ googleId: profile.id }).then(reallyExistingUser => {
-            if (reallyExistingUser) {
-              done(null, reallyExistingUser);
-            } else {
-              User.findOneAndUpdate(
-                { email: profile.emails[0].value },
-                { $set: { googleId: profile.id } },
-                (err, doc) => {
-                  if (err) {
-                    done(err, doc);
-                  }
-                  done(null, doc);
-                }
-              );
-            }
-          });
-          //done(err, user)
-          //already have a User record with that googleId
-        } else {
-          new User({
-            googleId: profile.id,
-            email: profile.emails[0].value
-          })
-            .save()
-            .then(user => {
-              done(null, user);
-            });
-        }
+    async (accessToken, refreshToken, profile, done) => {
+      const existingUser = await User.findOne({
+        email: profile.emails[0].value
       });
+      if (existingUser) {
+        const reallyExistingUser = await User.findOne({ googleId: profile.id });
+        if (reallyExistingUser) {
+          return done(null, reallyExistingUser);
+        }
+        User.findOneAndUpdate(
+          { email: profile.emails[0].value },
+          { $set: { googleId: profile.id } },
+          (err, doc) => {
+            if (err) {
+              return done(err, doc);
+            }
+            return done(null, doc);
+          }
+        );
+        //done(err, user)
+        //already have a User record with that googleId
+      }
+      const user = await new User({
+        googleId: profile.id,
+        email: profile.emails[0].value
+      }).save();
+      return done(null, user);
     }
   )
 );
@@ -66,7 +61,7 @@ passport.use(
     {
       clientID: keys.facebookAppID,
       clientSecret: keys.facebookAppSecret,
-      callbackURL: keys.appURL + '/auth/facebook/callback',
+      callbackURL: '/auth/facebook/callback',
       profileFields: [
         'id',
         'email',
@@ -78,40 +73,35 @@ passport.use(
         'verified'
       ]
     },
-    (accessToken, refreshToken, profile, done) => {
-      User.findOne({ email: profile.emails[0].value }).then(existingUser => {
-        if (existingUser) {
-          console.log(
-            'USER in the first find FB:' +
-              profile.id +
-              ' - ' +
-              profile.emails[0].value
-          );
-          User.findOne({ facebookId: profile.id }).then(reallyExistingUser => {
-            if (reallyExistingUser) {
-              done(null, reallyExistingUser);
-            } else {
-              User.findOneAndUpdate(
-                { email: profile.emails[0].value },
-                { $set: { facebookId: profile.id } },
-                (err, doc) => {
-                  if (err) {
-                    done(err, doc);
-                  }
-                  done(null, doc);
-                }
-              );
-            }
-          });
-        } else {
-          new User({
-            facebookId: profile.id,
-            email: profile.emails[0].value
-          })
-            .save()
-            .then(user => done(null, user));
-        }
+    async (accessToken, refreshToken, profile, done) => {
+      const existingUser = await User.findOne({
+        email: profile.emails[0].value
       });
+      if (existingUser) {
+        const reallyExistingUser = await User.findOne({
+          facebookId: profile.id
+        });
+        if (reallyExistingUser) {
+          return done(null, reallyExistingUser);
+        }
+        User.findOneAndUpdate(
+          { email: profile.emails[0].value },
+          { $set: { facebookId: profile.id } },
+          (err, doc) => {
+            if (err) {
+              return done(err, doc);
+            }
+            return done(null, doc);
+          }
+        );
+        //done(err, user)
+        //already have a User record with that googleId
+      }
+      const user = await new User({
+        facebookId: profile.id,
+        email: profile.emails[0].value
+      }).save();
+      return done(null, user);
     }
   )
 );
