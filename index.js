@@ -27,7 +27,7 @@ mongoose.connect(keys.mongoURI, err => {
 });
 const app = express();
 
-const httpServer = http.createServer(app);
+//const httpServer = http.createServer(app);
 //const httpsServer = https.createServer(credentials, app);
 
 app.use(bodyParser.json());
@@ -62,5 +62,5 @@ const INSECPORT = process.env.PORT || 5000;
 //const SECPORT = process.env.PORT || 5443;
 
 //app.listen(PORT);
-httpServer.listen(INSECPORT);
+app.listen(INSECPORT);
 //httpsServer.listen(SECPORT);
