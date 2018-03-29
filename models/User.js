@@ -5,7 +5,11 @@ const userSchema = new Schema({
   googleId: String,
   facebookId: String,
   name: String,
-  email: String
+  email: String,
+  credits: {
+    type: Number,
+    default: 0
+  }
 });
 
 mongoose.model('User', userSchema);

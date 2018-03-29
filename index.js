@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const bodyParser = require('body-parser');
 
 const keys = require('./config/keys');
 
@@ -29,6 +30,8 @@ const app = express();
 const httpServer = http.createServer(app);
 //const httpsServer = https.createServer(credentials, app);
 
+app.use(bodyParser.json());
+
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000, //30 days before expiration
@@ -40,6 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 //single line to require the function in the authRoutes file, return it and call it immediately with the app argument
 require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
 
 //Dynamic port binding
 //telling node to listen to  PORT variable OR 5000 if PORT is not set

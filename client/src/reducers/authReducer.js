@@ -1,6 +1,7 @@
 import { FETCH_USER } from '../actions/types';
 
 //Redux reducer that returns a particular state depending on the action called
+//Is responsible of creating the this.props.auth object we use in the React Components
 export default function(state = null, action) {
   switch (action.type) {
     case FETCH_USER:
@@ -9,3 +10,5 @@ export default function(state = null, action) {
       return state;
   }
 }
+
+//Next step: look to the action creator
