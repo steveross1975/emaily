@@ -26,7 +26,6 @@ mongoose.connect(keys.mongoURI, err => {
   }
 });
 const app = express();
-
 //const httpServer = http.createServer(app);
 //const httpsServer = https.createServer(credentials, app);
 

@@ -23,7 +23,7 @@ passport.use(
     {
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: '/auth/google/pippopluto'
+      callbackURL: '/auth/google/callbak'
     },
     async (accessToken, refreshToken, profile, done) => {
       const existingUser = await User.findOne({
