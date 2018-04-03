@@ -10,8 +10,8 @@ const bodyParser = require('body-parser');
 
 const keys = require('./config/keys');
 
-require('./models/User');
 require('./models/Survey');
+require('./models/User');
 require('./services/passport');
 
 //const privateKey = fs.readFileSync('config/privatekey.key', 'utf8');
@@ -45,6 +45,7 @@ app.use(passport.session());
 //single line to require the function in the authRoutes file, return it and call it immediately with the app argument
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   //Express will serve up production assets like main.js file

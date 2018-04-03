@@ -5,7 +5,7 @@ module.exports = {
   cookieKey: process.env.COOKIE_KEY,
   facebookAppID: process.env.FACEBOOK_APP_ID,
   facebookAppSecret: process.env.FACEBOOK_APP_SECRET,
-  appURL: process.env.APP_URL,
+  redirectDomain: process.env.REDIRECT_DOMAIN,
   stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
   sendGridKey: process.env.SENDGRID_KEY
