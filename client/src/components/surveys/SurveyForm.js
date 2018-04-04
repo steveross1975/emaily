@@ -1,23 +1,25 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form'; //is an helper function that is able to communicate with the redux-store
-import SurveyField from './SurveyField';
-//the prop handleSubmit is added automatically by the redux form
 import { Link } from 'react-router-dom';
+import SurveyField from './SurveyField';
+import validateEmails from '../../utils/validateEmails';
+import formFields from './formFields';
 
-const FIELDS = [
-  { label: 'Survey Title', name: 'title' },
-  { label: 'Subject Line', name: 'subject' },
-  { label: 'Email Body', name: 'body' },
-  { label: 'Recipients List', name: 'emails' }
-];
+//the prop handleSubmit is added automatically by the redux form
 
 class SurveyForm extends Component {
-  getTitleText() {
-    const { title } = this.props;
+  constructor(props) {
+    super(props);
+    this.state = {
+      titletext: ''
+    };
+  }
+  buildTitle(e) {
+    this.setState({ titleText: e.target.value });
   }
   renderFields() {
-    return _.map(FIELDS, ({ label, name }) => {
+    return _.map(formFields, ({ label, name }) => {
       return (
         <Field
           key={name}
@@ -25,6 +27,7 @@ class SurveyForm extends Component {
           type="text"
           label={label}
           name={name}
+          onChange={name === 'title' ? this.buildTitle.bind(this) : undefined}
         />
       );
     });
@@ -32,11 +35,17 @@ class SurveyForm extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.props.handleSubmit(values => console.log(values))}>
-          <input
-            style={{ fontSize: 24 + 'px', border: 'none' }}
-            value={this.getTitleText()}
-          />
+        <form onSubmit={this.props.handleSubmit(this.props.onSurveySubmit)}>
+          <p
+            style={{
+              fontSize: 48 + 'px',
+              fontWeight: 200,
+              fontFamily: 'Roboto, Arial, Sans Serif',
+              textAlign: 'center'
+            }}
+          >
+            {this.state.titleText}
+          </p>
           {this.renderFields()}
           <Link to="/surveys" className="red btn-flat white-text">
             Cancel
@@ -51,7 +60,25 @@ class SurveyForm extends Component {
   }
 }
 
+function validate(values) {
+  const errors = {};
+
+  //Email Recipients List Validation
+  errors.emails = validateEmails(values.emails || '');
+
+  //Mandatory Fields Validation
+  _.each(formFields, ({ name, noValueError }) => {
+    if (!values[name]) {
+      errors[name] = noValueError;
+    }
+  });
+
+  return errors;
+}
+
 //like connect reduxForm is called like that
 export default reduxForm({
-  form: 'surveyForm'
+  validate,
+  form: 'surveyForm',
+  destroyOnUnmount: false
 })(SurveyForm);
