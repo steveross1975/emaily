@@ -7,22 +7,31 @@ import validateEmails from '../../utils/validateEmails';
 import formFields from './formFields';
 
 //the prop handleSubmit is added automatically by the redux form
-
+if (performance.navigation.type === 1) {
+  localStorage.setItem('title', '');
+}
 class SurveyForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      titletext: ''
+      titleText: ''
     };
   }
+
   buildTitle(e) {
-    this.setState({ titleText: e.target.value });
+    const titleValue = e.target.value;
+    this.setState({ titleText: titleValue });
+    localStorage.setItem('title', titleValue);
+  }
+  componentWillMount() {
+    this.setState({ titleText: localStorage.getItem('title') });
   }
   renderFields() {
     return _.map(formFields, ({ label, name }) => {
       return (
         <Field
           key={name}
+          id={name === 'title' ? 'title' : undefined}
           component={SurveyField}
           type="text"
           label={label}
@@ -41,13 +50,18 @@ class SurveyForm extends Component {
               fontSize: 48 + 'px',
               fontWeight: 200,
               fontFamily: 'Roboto, Arial, Sans Serif',
-              textAlign: 'center'
+              textAlign: 'center',
+              marginBottom: '48px'
             }}
           >
             {this.state.titleText}
           </p>
           {this.renderFields()}
-          <Link to="/surveys" className="red btn-flat white-text">
+          <Link
+            to="/surveys"
+            onClick={() => localStorage.setItem('title', '')}
+            className="red btn-flat white-text"
+          >
             Cancel
           </Link>
           <button type="submit" className="teal btn-flat right white-text">
