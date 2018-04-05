@@ -6,6 +6,16 @@ import SurveyList from './surveys/SurveyList';
 const Dashboard = () => {
   return (
     <div>
+      <p
+        style={{
+          fontWeight: 200,
+          fontSize: '48px',
+          fontFamily: 'Roboto, Arial, Sans Serif',
+          textAlign: 'center'
+        }}
+      >
+        Survey Dashboard
+      </p>
       <SurveyList />
       <div className="fixed-action-btn">
         <Link
