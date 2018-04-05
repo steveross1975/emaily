@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Payments from './Payments';
+import { Navbar, NavItem } from 'react-materialize';
 
 class Header extends Component {
   renderContent() {
@@ -31,20 +32,51 @@ class Header extends Component {
         ];
     }
   }
+
+  renderMobileContent() {
+    switch (this.props.auth) {
+      case null:
+        return;
+      case false:
+        return [
+          <NavItem href="/auth/google">Login With Google</NavItem>,
+          <NavItem href="/auth/google">Login With Facebook</NavItem>
+        ];
+      default:
+        return [
+          <NavItem>
+            <Payments />
+          </NavItem>,
+          <NavItem style={{ margin: '0 10px' }}>
+            Credits: {this.props.auth.credits}
+          </NavItem>,
+          <NavItem href="/api/logout">Logout</NavItem>
+        ];
+    }
+  }
   render() {
     return (
-      <nav>
-        <div className="nav-wrapper #006064 cyan darken-4">
-          <Link
-            to={this.props.auth ? '/surveys' : '/'}
-            className="left brand-logo"
-          >
-            Emaily
-          </Link>
-          <ul className="right">{this.renderContent()}</ul>
-        </div>
-      </nav>
+      <div>
+        <nav>
+          <div className="nav-wrapper #006064 cyan darken-4">
+            <Link
+              to={this.props.auth ? '/surveys' : '/'}
+              className="brand-logo"
+            >
+              Emaily
+            </Link>
+            <ul className="right hide-on-med-and-down">
+              {this.renderContent()}
+            </ul>
+          </div>
+        </nav>
+      </div>
     );
+    // return (
+    //   <Navbar brand="Emaily" right>
+    //     {this.renderMobileContent()}
+    //   </Navbar>
+    // );
   }
 }
 

@@ -11,10 +11,8 @@
     "start": "node index.js",
     "server": "nodemon index.js",
     "client": "npm run start --prefix client",
-    "dev":
-      "concurrently \"npm run server\" \"npm run client\" \"npm run webhook\"",
-    "heroku-postbuild":
-      "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run webhook\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "webhook": "./sendgrid_webhook.sh"
   },
   "author": "",
@@ -34,6 +32,7 @@
     "path-parser": "^2.0.2",
     "prop-types": "^15.6.1",
     "react-flip-move": "^3.0.1",
+    "react-materialize": "^2.1.4",
     "sendgrid": "^5.2.3",
     "stripe": "^5.6.1"
   },
