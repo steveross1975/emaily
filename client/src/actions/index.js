@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 //REDUX TYPE
-import { FETCH_USER } from './types';
+import { FETCH_USER, FETCH_SURVEYS } from './types';
 
 // export const fetchUser = () => {
 //   return function(dispatch) {
@@ -29,4 +29,9 @@ export const submitSurvey = (values, history) => async dispatch => {
   //dispatch of type FETCH_USER because when we submit the survey, the customer credits are deducted and then a new user object is returned by the backend with the new customer credits
   history.push('/surveys');
   dispatch({ type: FETCH_USER, payload: res.data });
+};
+
+export const fetchSurveys = () => async dispatch => {
+  const res = await axios.get('/api/surveys');
+  dispatch({ type: FETCH_SURVEYS, payload: res.data });
 };
