@@ -24,8 +24,9 @@ export const handleToken = token => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data });
 };
 
-export const submitSurvey = values => {
-  return {
-    type: 'submit_survey'
-  };
+export const submitSurvey = (values, history) => async dispatch => {
+  const res = await axios.post('/api/surveys', values);
+  //dispatch of type FETCH_USER because when we submit the survey, the customer credits are deducted and then a new user object is returned by the backend with the new customer credits
+  history.push('/surveys');
+  dispatch({ type: FETCH_USER, payload: res.data });
 };

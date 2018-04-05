@@ -27,16 +27,17 @@ class SurveyForm extends Component {
     this.setState({ titleText: localStorage.getItem('title') });
   }
   renderFields() {
-    return _.map(formFields, ({ label, name }) => {
+    return _.map(formFields, ({ label, name, type }) => {
       return (
         <Field
           key={name}
           id={name === 'title' ? 'title' : undefined}
           component={SurveyField}
-          type="text"
+          type={type}
           label={label}
           name={name}
           onChange={name === 'title' ? this.buildTitle.bind(this) : undefined}
+          multiple={type === 'email' ? 'multiple' : undefined}
         />
       );
     });
@@ -78,7 +79,7 @@ function validate(values) {
   const errors = {};
 
   //Email Recipients List Validation
-  errors.emails = validateEmails(values.emails || '');
+  errors.recipients = validateEmails(values.recipients || '');
 
   //Mandatory Fields Validation
   _.each(formFields, ({ name, noValueError }) => {
