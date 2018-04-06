@@ -1,0 +1,41 @@
+//Mobile first approach: the standard styles are for mobile screens, the @media ones will be for desktop PCs
+
+.wrapper {
+  display: flex;
+  height: $wrapper-height;
+  margin: 0 auto; /*Top and Bottom Margin = 0, left and right margins = auto (centered text)*/
+  max-width: $site-max-width;
+  @include desktop {
+    padding: $large-space $space;
+  }
+}
+
+.wrapper__sidebar {
+  display: flex;
+  transition: left .3s ease;
+  width: 100vw;
+
+  position: fixed;
+  top: $title-bar-height;
+  left: -100vw;
+  bottom: 0;
+  z-index: 1;
+
+  @include desktop  {
+    display: flex;
+    padding-right: $large-space;
+    position: static;
+    width: $wrapper-sidebar-width;  }
+}
+
+.is-nav-open .wrapper__sidebar {
+  left: 0;
+}
+
+.wrapper__main {
+  display: flex;
+  width: 100%;
+  @include desktop {
+    width: $wrapper-main-width;
+  }
+}

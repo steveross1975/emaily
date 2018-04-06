@@ -1,0 +1,51 @@
+//Colors
+
+$brand-primary: #397ab1;
+$grey: #dddddd;
+$light-grey: #f9f9f9;
+$dark-grey: #999999;
+
+//body
+$body-background-color: #fafafa;
+$body-default-color: #333333;
+$body-default-font-family: Helvetica, Arial, sans-serif;
+
+//spacing
+$large-space: 2.8rem;
+$site-max-width: 100rem;
+$space: 1.4rem;
+
+//Font Sizes
+$base-font-size: 1.4rem;
+$large-font-size: 2.2rem;
+
+//Form inputs
+$input-border: $grey;
+$input-spacing: 1rem;
+
+//Boxed View variables
+$boxed-view-overlay-bg: $grey;
+$boxed-view-bg: white; //for the boxed-view__box;
+$boxed-view-border-color: $grey;
+
+//buttons
+$button-bg: $brand-primary;
+$button-text-color: white;
+$button-pill-color: $brand-primary;
+$button--secondary-bg: $light-grey;
+$button--secondary-color: $dark-grey;
+$button--secondary-border-color: $grey;
+
+//title-bar;
+$title-bar-bg: $brand-primary;
+$title-bar-color: white;
+$title-bar-height: 6rem;
+
+//item
+$item-border-width: 4px;
+
+
+//wrapper
+$wrapper-sidebar-width: 30rem;
+$wrapper-main-width: calc(#{$site-max-width} - #{$wrapper-sidebar-width});
+$wrapper-height: calc(100vh - #{$title-bar-height});

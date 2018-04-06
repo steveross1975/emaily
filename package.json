@@ -8,12 +8,16 @@
     "npm": "5.6.0"
   },
   "scripts": {
+    "build-css": "node-sass-chokidar client/src/ -o client/src/",
+    "watch-css": "npm run build-css && node-sass-chokidar client/src/ -o client/src/ --watch --recursive",
     "start": "node index.js",
+    "build-js": "react-scripts build",
+    "build": "concurrently \"build-css\" \"build-js\" ",
     "server": "nodemon index.js",
     "client": "npm run start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run webhook\"",
+    "dev": "concurrently \"npm run watch-css\" \"npm run server\" \"npm run client\" \"npm run webhook\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
-    "webhook": "./sendgrid_webhook.sh"
+    "webhook": "forever sendgrid_webhook.js"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +29,7 @@
     "localtunnel": "^1.9.0",
     "lodash": "^4.17.5",
     "mongoose": "^5.0.11",
+    "node-sass-chokidar": "^1.2.2",
     "nodemon": "^1.17.2",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
@@ -32,11 +37,11 @@
     "path-parser": "^2.0.2",
     "prop-types": "^15.6.1",
     "react-flip-move": "^3.0.1",
-    "react-materialize": "^2.1.4",
     "sendgrid": "^5.2.3",
     "stripe": "^5.6.1"
   },
   "devDependencies": {
-    "forever": "^0.15.3"
+    "forever": "^0.15.3",
+    "react-scripts": "^1.1.4"
   }
 }

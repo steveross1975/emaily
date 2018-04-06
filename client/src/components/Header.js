@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Payments from './Payments';
-import { Navbar, NavItem } from 'react-materialize';
 
 class Header extends Component {
   renderContent() {
